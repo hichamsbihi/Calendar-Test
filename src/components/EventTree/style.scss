@@ -1,0 +1,27 @@
+.eventTree-container{
+  
+  border-radius: var(--main-btn-border-radius);
+  background-color: #ccf7ef;
+  box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
+  overflow: hidden;
+}
+
+.vertical-hours-line{
+  border-left: 3px solid #23ae96;
+  margin-left: 5px;
+}
+
+
+.horizontal-divider-line{
+  position: absolute;
+  height: 2px;
+  top: 10px;
+  left: 40px;
+}
+
+.text-hours-span{
+  position: absolute;
+  top: 10px;
+  left: 20px;
+
+}
