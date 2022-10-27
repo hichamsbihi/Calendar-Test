@@ -38,24 +38,27 @@ const EventTree = ({ global_height, global_width, events_array }) => {
     const container_width = global_width - 50;
     const init_left_by_px = 60;
 
-    const { columns_wrapper } = get_events_by_col(events_array);
-    const columns_nbr = Object.keys(columns_wrapper).length;
-    const event_width = container_width / columns_nbr;
-    return Object.entries(columns_wrapper).map((col_pair) => {
-      return col_pair[1].map((event) => (
-        <Event
-          id={event.id}
-          key={"event" + event.id}
-          start={event.start}
-          duration={event.duration}
-          data_body={event.data || null}
-          style={{
-            width: event_width + "px",
-            left: init_left_by_px + col_pair[0] * event_width + "px",
-          }}
-          hour_slot_height_by_pixel={hour_slot_height_by_pixel}
-        />
-      ));
+    const { timeline_mapper } = get_events_by_col(events_array);
+
+    return Object.entries(timeline_mapper).map((col_pair) => {
+      let level_nbr = col_pair[1].length;
+      let event_width = container_width / level_nbr;
+      return col_pair[1].map((eventarray, idx) => {
+        return eventarray.map((event) => (
+          <Event
+            id={event.id}
+            key={"event" + event.id}
+            start={event.start}
+            duration={event.duration}
+            data_body={event.data || null}
+            style={{
+              width: event_width + "px",
+              left: init_left_by_px + idx * event_width + "px",
+            }}
+            hour_slot_height_by_pixel={hour_slot_height_by_pixel}
+          />
+        ));
+      });
     });
   };
 
@@ -79,5 +82,4 @@ const EventTree = ({ global_height, global_width, events_array }) => {
     </div>
   );
 };
-
 export default EventTree;

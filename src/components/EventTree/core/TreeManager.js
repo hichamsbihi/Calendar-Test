@@ -21,58 +21,127 @@ const time_comparator = (time1, time2) => {
   return temp_date < temp_date1 ? -1 : 1;
 };
 
+const to_minutes = (time_str) => {
+  return (
+    parseInt(time_str.split(":")[0]) * 60 + parseInt(time_str.split(":")[1])
+  );
+};
+
+const isOverLaps = (event1, event2) => {
+  if (time_comparator(event2.start, event1.start) < 0)
+    return isOverLaps(event2, event1);
+
+  let event1_duration_by_min = to_minutes(event1.start) + event1.duration;
+  let event2_starttime_by_min = to_minutes(event2.start);
+
+  return event2_starttime_by_min < event1_duration_by_min;
+};
+
+const is_interval_contains_event = (source_interval, event_interval_str) => {
+  let event_minutes_start,
+    event_minutes_end,
+    source_minutes_start,
+    source_minutes_end;
+  let is_inside = 0,
+    new_interval = source_interval;
+
+  event_minutes_start = parseInt(event_interval_str.split("|")[0]);
+  event_minutes_end = parseInt(event_interval_str.split("|")[1]);
+
+  source_minutes_start = parseInt(source_interval.split("|")[0]);
+  source_minutes_end = parseInt(source_interval.split("|")[1]);
+
+  if (event_minutes_end <= source_minutes_end) is_inside = 1;
+  else if (event_minutes_start < source_minutes_end) {
+    is_inside = 2;
+    new_interval = source_minutes_start + "|" + event_minutes_end;
+  }
+
+  /*
+      case 0 :                       | case 1 : 
+        source_event  start  *       |   source_event  start   *
+                             |       |                         |
+                             |       |                         |
+                             |       |                         |
+                        end  *       |                         |    *  start   <== comming event
+                                     |                         |    |
+        comming event  start *       |                         |    |
+                             |       |                         |    |
+                             |       |                         |    |
+                             |       |                         |    * end
+                             |       |                   end   *
+                             |       |
+                        end  *       |
+                                     |
+    */
+  return {
+    new_interval,
+    is_inside,
+  };
+};
+
 export const get_events_by_col = (events_table) => {
   let sorted_events_by_start_time = events_table.sort((a, b) =>
     time_comparator(a.start, b.start)
   );
-  let columns_wrapper = {};
+  let timeline_mapper = {};
 
-  const to_minutes = (time_str) => {
-    return (
-      parseInt(time_str.split(":")[0]) * 60 + parseInt(time_str.split(":")[1])
-    );
+  const insert_by_column = (event, col_array) => {
+    let is_packed = false;
+
+    col_array.forEach((col_) => {
+      if (is_packed) return;
+      let last_event_from_current_col = col_.at(-1);
+      if (!isOverLaps(event, last_event_from_current_col)) {
+        col_.push(event);
+        is_packed = true;
+      }
+    });
+    if (!is_packed) col_array.push([event]);
+    return;
   };
 
-  const isOverLaps = (event1, event2) => {
-    if (time_comparator(event2.start, event1.start) < 0)
-      return isOverLaps(event2, event1);
+  const insert_event = (event) => {
+    let event_interval_by_minute = to_minutes(event.start) + event.duration;
+    let event_interval_str =
+      to_minutes(event.start) + "|" + event_interval_by_minute;
+    let event_inserted = false;
+    let keys_intervals_to_change = {};
 
-    let event1_duration_by_min = to_minutes(event1.start) + event1.duration;
-    let event2_starttime_by_min = to_minutes(event2.start);
+    Object.entries(timeline_mapper).forEach((time_interval) => {
+      if (event_inserted) return;
 
-    return event2_starttime_by_min < event1_duration_by_min;
-  };
+      let { new_interval, is_inside } = is_interval_contains_event(
+        time_interval[0],
+        event_interval_str
+      );
 
-  const insert_event = (event, current_col_idx) => {
-    if (!columns_wrapper[current_col_idx]) {
-      columns_wrapper[current_col_idx] = [
-        { ...event, level: current_col_idx + 1 },
-      ];
-      return current_col_idx + 1;
+      if (is_inside === 1) {
+        insert_by_column(event, time_interval[1]);
+        event_inserted = true;
+      } else if (is_inside === 2) {
+        insert_by_column(event, time_interval[1]);
+        event_inserted = true;
+        keys_intervals_to_change[time_interval[0]] = new_interval;
+      }
+    });
+    if (!event_inserted) {
+      timeline_mapper[event_interval_str] = [[event]];
+      return;
     }
-    let last_event_from_current_col = columns_wrapper[current_col_idx].at(-1);
-    if (!isOverLaps(event, last_event_from_current_col)) {
-      columns_wrapper[current_col_idx].push({
-        ...event,
-        level: current_col_idx + 1,
-      });
-      return current_col_idx + 1;
-    }
-    let sub_level = insert_event(event, current_col_idx + 1);
-    if (last_event_from_current_col.level) {
-      if (last_event_from_current_col.level < sub_level)
-        last_event_from_current_col.level = sub_level;
-    } else last_event_from_current_col.level = sub_level;
-
-    return sub_level;
+    Object.keys(keys_intervals_to_change).forEach((__key) => {
+      timeline_mapper[keys_intervals_to_change[__key]] = timeline_mapper[__key];
+      delete timeline_mapper[__key];
+    });
+    return;
   };
 
   sorted_events_by_start_time.forEach((event) => {
-    insert_event(event, 0);
+    insert_event(event);
   });
 
   return {
-    columns_wrapper,
+    timeline_mapper,
     sorted_events_by_starttime: sorted_events_by_start_time,
   };
 };
