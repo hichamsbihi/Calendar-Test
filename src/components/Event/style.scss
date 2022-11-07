@@ -5,17 +5,19 @@
   box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
   overflow: hidden;
   transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  border: none;
 }
 
 .event-item:hover {
   box-shadow: rgba(0, 0, 0, 1) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
   background-color: #23ae96;
-  min-height: 50px !important;
+  min-height: 80px !important;
   z-index: 1;
 
 }
 .event-main-text {
   font-family: "montserrat", sans-serif;
+  font-weight: 700;
 
 }
 

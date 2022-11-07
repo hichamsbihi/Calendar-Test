@@ -11,7 +11,8 @@ export const get_event_dimension = ({
     let event_top_by_pixel =
       10 +
       _hour * hour_slot_height_by_pixel +
-      _min * (hour_slot_height_by_pixel / 60);
+      _min * (hour_slot_height_by_pixel / 60) -
+      9 * hour_slot_height_by_pixel;
     let event_height_by_pixel = duration * (hour_slot_height_by_pixel / 60);
 
     return {

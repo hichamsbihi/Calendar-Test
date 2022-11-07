@@ -6,8 +6,8 @@ import { get_hours_of_day, get_events_by_col } from "./core/TreeManager";
 
 const EventTree = ({ global_height, global_width, events_array }) => {
   const hours_of_day = get_hours_of_day();
-  const hour_slot_height_by_pixel = global_height / 24;
-  const horizontal_line_width = global_width - 50;
+  const hour_slot_height_by_pixel = global_height / 12;
+  const horizontal_line_width = global_width - 59;
 
   console.log(get_events_by_col(events_array));
 
@@ -21,7 +21,13 @@ const EventTree = ({ global_height, global_width, events_array }) => {
         <div
           key={"timeId-" + hour[0]}
           className="text-hours-span"
-          style={{ top: hour[0] * hour_slot_height_by_pixel }}
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            top:
+              hour[0] * hour_slot_height_by_pixel -
+              9 * hour_slot_height_by_pixel,
+          }}
         >
           <span>{hour[1]}</span>
           <div
@@ -35,8 +41,8 @@ const EventTree = ({ global_height, global_width, events_array }) => {
 
   const render_events = ({ hour_slot_height_by_pixel, events_array }) => {
     // the global width of events screen  (we retreived the 50 pixel of time span in the left)
-    const container_width = global_width - 50;
-    const init_left_by_px = 60;
+    const container_width = global_width - 55;
+    const init_left_by_px = 57;
 
     const { timeline_mapper } = get_events_by_col(events_array);
 
@@ -65,7 +71,10 @@ const EventTree = ({ global_height, global_width, events_array }) => {
   return (
     <div
       className="eventTree-container"
-      style={{ width: global_width + "px", height: global_height + "px" }}
+      style={{
+        width: global_width + "px",
+        height: parseInt(global_height) + 15 + "px",
+      }}
     >
       <div
         className="vertical-hours-line"

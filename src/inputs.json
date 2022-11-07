@@ -22,8 +22,7 @@
   {
     "id": 5,
     "start": "18:00",
-    "duration": 120,
-    "data": "Hna khdem ela kerk"
+    "duration": 60
   },
   {
     "id": 6,
@@ -62,7 +61,7 @@
   },
   {
     "id": 13,
-    "start": "14:28",
+    "start": "14:45",
     "duration": 60
   },
   {
@@ -78,36 +77,11 @@
   {
     "id": 16,
     "start": "11:40",
-    "duration": 240
+    "duration": 40
   },
   {
     "id": 17,
     "start": "14:00",
-    "duration": 30
-  },
-  {
-    "id": 18,
-    "start": "14:00",
-    "duration": 45
-  },
-  {
-    "id": 19,
-    "start": "14:00",
-    "duration": 30
-  },
-  {
-    "id": 20,
-    "start": "05:00",
-    "duration": 30
-  },
-  {
-    "id": 21,
-    "start": "05:20",
-    "duration": 30
-  },
-  {
-    "id": 22,
-    "start": "04:00",
     "duration": 30
   }
 ]

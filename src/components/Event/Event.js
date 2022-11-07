@@ -29,8 +29,10 @@ export default Event = ({
         // hna ndiro chi logique dl hover wla click
       }}
     >
+      <div className="event-main-text"> ID : {id}</div>
       <div className="event-main-text">{starttime_sub_text}</div>
       <div className="event-main-text">{duration_sub_text}</div>
+
       {data_body && <span>{data_body}</span>}
     </button>
   );

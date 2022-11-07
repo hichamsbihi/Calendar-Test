@@ -7,8 +7,10 @@ import EventTree from "./components/EventTree/EventTree";
 import { Slider, Row, Col } from "antd";
 
 const App = () => {
+  console.log(Window.innerWidth);
+
   const [calendarheight, setcalendarheight] = useState(2000);
-  const [calendarwidth, setcalendarwidth] = useState(600);
+  const [calendarwidth, setcalendarwidth] = useState(window.innerWidth);
 
   return (
     <>
@@ -37,7 +39,7 @@ const App = () => {
           </div>
         </Col>
       </Row>
-      <Row>
+      <Row justify="center">
         <Col>
           <EventTree
             global_height={calendarheight.toString()}
