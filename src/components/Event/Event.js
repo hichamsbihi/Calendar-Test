@@ -1,9 +1,9 @@
 import "./style.scss";
 
 import React from "react";
-import { get_event_dimension } from "./core/EventManager";
+import { get_event_dimension } from "../../utils/event_utils";
 
-export default Event = ({
+export const Event = ({
   id,
   start,
   duration,
@@ -12,7 +12,7 @@ export default Event = ({
   hour_slot_height_by_pixel,
 }) => {
   const starttime_sub_text = "start time : " + start;
-  const duration_sub_text = "Duration: " + duration + " min";
+  const duration_sub_text = "duration: " + duration + " min";
 
   const { top, height } = get_event_dimension({
     duration,
@@ -25,9 +25,6 @@ export default Event = ({
       key={"event-" + id}
       className="event-item"
       style={{ ...style, top, height }}
-      onClick={() => {
-        // hna ndiro chi logique dl hover wla click
-      }}
     >
       <div className="event-main-text"> ID : {id}</div>
       <div className="event-main-text">{starttime_sub_text}</div>

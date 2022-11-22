@@ -2,13 +2,11 @@ import "./index.css";
 import React, { useState } from "react";
 import "antd/dist/antd.css";
 
-import INPUTS from "./inputs";
-import EventTree from "./components/EventTree/EventTree";
+import INPUTS from "./inputs.json";
+import { Event_tree } from "./components/EventTree/event_tree";
 import { Slider, Row, Col } from "antd";
 
 const App = () => {
-  console.log(Window.innerWidth);
-
   const [calendarheight, setcalendarheight] = useState(2000);
   const [calendarwidth, setcalendarwidth] = useState(window.innerWidth);
 
@@ -41,7 +39,7 @@ const App = () => {
       </Row>
       <Row justify="center">
         <Col>
-          <EventTree
+          <Event_tree
             global_height={calendarheight.toString()}
             global_width={calendarwidth.toString()}
             events_array={INPUTS}
