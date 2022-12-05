@@ -1,9 +1,9 @@
 import "./index.css";
 import React, { useState } from "react";
-import "antd/dist/antd.css";
+import "antd/dist/antd.min.css";
 
 import INPUTS from "./inputs.json";
-import { Event_tree } from "./components/EventTree/event_tree";
+import { EventTree } from "./components/EventTree/EventTree";
 import { Slider, Row, Col } from "antd";
 
 const App = () => {
@@ -39,10 +39,10 @@ const App = () => {
       </Row>
       <Row justify="center">
         <Col>
-          <Event_tree
-            global_height={calendarheight.toString()}
-            global_width={calendarwidth.toString()}
-            events_array={INPUTS}
+          <EventTree
+            globalHeight={calendarheight.toString()}
+            globalWidth={calendarwidth.toString()}
+            eventsArray={INPUTS}
           />
         </Col>
       </Row>

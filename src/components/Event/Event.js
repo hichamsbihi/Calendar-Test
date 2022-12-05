@@ -1,23 +1,23 @@
 import "./style.scss";
 
 import React from "react";
-import { get_event_dimension } from "../../utils/event_utils";
+import { GetEventDimension } from "../../utils/EventUtils";
 
 export const Event = ({
   id,
   start,
   duration,
-  data_body,
+  dataBody,
   style,
-  hour_slot_height_by_pixel,
+  hourSlotHeightByPixel,
 }) => {
-  const starttime_sub_text = "start time : " + start;
-  const duration_sub_text = "duration: " + duration + " min";
+  const starttimeSubText = "start time : " + start;
+  const durationSubText = "duration: " + duration + " min";
 
-  const { top, height } = get_event_dimension({
+  const { top, height } = GetEventDimension({
     duration,
     start,
-    hour_slot_height_by_pixel,
+    hourSlotHeightByPixel,
   });
 
   return (
@@ -27,10 +27,10 @@ export const Event = ({
       style={{ ...style, top, height }}
     >
       <div className="event-main-text"> ID : {id}</div>
-      <div className="event-main-text">{starttime_sub_text}</div>
-      <div className="event-main-text">{duration_sub_text}</div>
+      <div className="event-main-text">{starttimeSubText}</div>
+      <div className="event-main-text">{durationSubText}</div>
 
-      {data_body && <span>{data_body}</span>}
+      {dataBody && <span>{dataBody}</span>}
     </button>
   );
 };
